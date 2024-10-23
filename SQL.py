@@ -1,4 +1,15 @@
-lijstje = [1,2,3,4,5]
-for x in lijstje: print(x)
+import mysql.connector
+mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="UPGL4eC&mSHXT%9mQZ8P",
+)
+mycursor = mydb.cursor()
+
+mycursor.execute("SHOW DATABASES")
+
+for x in mycursor:
+  print(x)
+
 
 
