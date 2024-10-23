@@ -11,18 +11,20 @@ df = pd.DataFrame(data)
 # print(df)
 
 # Pizza categorieen groeperen + aantal keer verkocht
-pizza_category = df.groupby('pizza_category')['order_details_id'].count()
+pizzaCategory = df.groupby('pizzaCategory')['orderDetails_id'].count()
 
 # Verkopen per categorie in procenten
-sales_percentage = (pizza_category / pizza_category.sum()) * 100
+salesPercentage = (pizzaCategory / pizzaCategory.sum()) * 100
 
 
 # Piechart maken voor "1D Visualisatie: Visualiseer per pizzacategorie het percentage verkochte pizza’s."
 
+# def maakPieChart IMPLEMENTEREN
+
 # Kind = type grafiek, 
 # Autopct = Automatic Percentage > 1.1 betekent 1 cijfer achter de komma, 1.0 staat voor géén cijfer achter de komma,
 # Startangle = de hoek waarop de piechart begint,
-sales_percentage.plot(kind='pie', autopct='%1.0f%%', startangle=90, colors=['skyblue', 'lightgreen', 'coral', 'lightpink'])
+salesPercentage.plot(kind='pie', autopct='%1.0f%%', startangle=90, colors=['skyblue', 'lightgreen', 'coral', 'lightpink'])
 
 # Y-as verwijderen
 plt.ylabel('')
