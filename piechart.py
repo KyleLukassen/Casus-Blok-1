@@ -1,36 +1,44 @@
-import sqlite3
-import pandas as pd
 import matplotlib.pyplot as plt
+from load_data import load_data_from_db
 
-def load_data_from_db():
-    conn = sqlite3.connect('pizzasales.db')
-    query = 'SELECT * FROM pizza_sales'
-    df = pd.read_sql_query(query, conn)
-    conn.close()
-    return df
+outlier_bottom = 0
+outlier_top = 100
+percentage = 100
+
 
 # 1D Visualisatie: Visualiseer per pizzacategorie het percentage verkochte pizza’s.
+def create_piechart(remove_outlier_bottom=True, bottom_treshold=outlier_bottom,
+                    remove_outlier_top=True, top_treshold=outlier_top):
 
+    # Laadt de data uit de database.
+    dataframe = load_data_from_db()
 
-def create_piechart():
-    df = load_data_from_db()  # Laad de data uit de database
-    percentage = 100
+    # Groepeert de data per pizzacategorie.
+    # count() telt het aantal bestellingen in order_details_id (+1). Dit alleen als het veld niet leeg is (geen waarde).
+    pizza_category = dataframe.groupby('pizza_category')['order_details_id'].count()
 
-    # Groepeert het aantal bestellingen per pizzacategorie in de dataset
-    pizza_category = df.groupby('pizza_category')['order_details_id'].count()
-
-    # Berekent het verkooppercentage per pizzacategorie, elk aantal delen door de som en vermenigvuldigen met percentage
+    # Berekent het verkooppercentage per categorie, sum() geeft totaal aantal bestellingen voor alle categorieën.
     sales_percentage = (pizza_category / pizza_category.sum()) * percentage
 
-    plt.figure().canvas.manager.set_window_title('Positive Patatoes - 1D: Piechart')  # Aanpassen titel van het venster
-    plt.get_current_fig_manager().window.state('zoomed')  # Automatisch gemaximaliseerd openen
+    # Stelt de titel van het venster in en zorgt ervoor dat deze in volledig venster opent.
+    plt.figure().canvas.manager.set_window_title('Positive Patatoes - 1D: Piechart')
+    plt.get_current_fig_manager().window.state('zoomed')
 
-    sales_percentage.plot(kind='pie',  # Type grafiek (in dit geval een cirkeldiagram)
-                         autopct='%1.0f%%',  # Automatisch percentage > 1.1 betekend 1 cijfer achter komma, 1.0 geen
-                         startangle=90,  # De hoek waaruit de piechart begint
-                         colors=['skyblue', 'lightgreen', 'coral', 'lightpink'])  # Kleuren voor verschillende categorie
+    # Verwijdert outliers als deze groter dan of kleiner dan en gelijk aan de treshold zijn.
+    if remove_outlier_bottom:
+        sales_percentage = sales_percentage[(sales_percentage >= bottom_treshold)]
+    if remove_outlier_top:
+        sales_percentage = sales_percentage[(sales_percentage <= top_treshold)]
 
-    plt.ylabel('')  # Verwijdert het label van de Y-as voor een nettere weergave
-    plt.title('Percentage verkochte pizza’s per categorie:')  # Titel van het diagram
-    plt.axis('equal')  # Zorgt ervoor dat de piechart rond is in plaats van ovaal
-    plt.show()
+    # Maakt de pierchart aan op basis van sales_percentage.
+    sales_percentage.plot(kind='pie',  # Het type van de grafiek in dit geval een piechart.
+                          autopct='%1.0f%%',  # Geeft het percentage in heel getal terug (1.1 geeft float terug).
+                          startangle=90,  # De hoek waaruit de piechart begint.
+                          colors=['skyblue', 'lightgreen', 'coral', 'lightpink'])  # Kleuren van de categorieën.
+
+    plt.title('Percentage verkochte pizza’s per categorie:')  # Titel van het diagram.
+    plt.ylabel('')  # Hiermee pas je de tekst van het Y-label aan (Niet nodig in een piechart vandaar dat deze leeg is).
+    plt.axis('equal')  # Zorgt ervoor dat de piechart rond is in plaats van ovaal door de X en Y as gelijk te houden.
+    plt.show()  # Laat de grafiek zien.
+
+# DONEEEE
