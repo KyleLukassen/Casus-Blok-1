@@ -19,5 +19,3 @@ def load_data_from_db():
 
     # Returned het dataframe inclusief de data.
     return dataframe
-
-# DONEEE

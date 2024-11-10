@@ -67,5 +67,3 @@ def create_scatterplot(remove_outlier_bottom=True, bottom_threshold=outlier_bott
 
     plt.legend(bbox_to_anchor=(-0.6, 0.5), loc='center left')  # Zorgt voor ruimte tussen de scatterplot en legenda.
     plt.show()  # Laat de grafiek zien.
-
-# DONEEE

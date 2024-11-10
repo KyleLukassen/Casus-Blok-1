@@ -40,5 +40,3 @@ def create_piechart(remove_outlier_bottom=True, bottom_treshold=outlier_bottom,
     plt.ylabel('')  # Hiermee pas je de tekst van het Y-label aan (Niet nodig in een piechart vandaar dat deze leeg is).
     plt.axis('equal')  # Zorgt ervoor dat de piechart rond is in plaats van ovaal door de X en Y as gelijk te houden.
     plt.show()  # Laat de grafiek zien.
-
-# DONEEEE

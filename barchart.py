@@ -48,5 +48,3 @@ def create_barchart(remove_outlier_bottom=True, bottom_treshold=outlier_bottom,
     plt.subplots_adjust(bottom=0.3)  # Zorgt voor afstand tussen de onderkant zodat alles leesbaar is.
     plt.legend(title='Pizzacategorie')  # Toon de legenda voor de categorieën.
     plt.show()  # Laat de grafiek zien.
-
-# DONEEE
